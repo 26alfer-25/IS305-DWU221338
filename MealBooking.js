@@ -1,5 +1,4 @@
 class MealBooking {
-    // Private fields
     #studentId;
     #studentName;
     #mealDate;
