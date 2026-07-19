@@ -1,5 +1,3 @@
-// MealBooking.js
-
 class MealBooking {
     // Private fields
     #studentId;
@@ -9,8 +7,7 @@ class MealBooking {
     #quantity;
     #dietaryNote;
     #bookingStatus;
-
-    // Constructor
+    
     constructor(studentId, studentName, mealDate, mealType, quantity, dietaryNote) {
         this.#studentId = studentId;
         this.#studentName = studentName;
@@ -21,7 +18,6 @@ class MealBooking {
         this.#bookingStatus = "Pending"; // Default status
     }
 
-    // Getters
     get studentId() {
         return this.#studentId;
     }
@@ -50,7 +46,6 @@ class MealBooking {
         return this.#bookingStatus;
     }
 
-    // Setters
     set studentId(studentId) {
         this.#studentId = studentId;
     }
@@ -79,7 +74,6 @@ class MealBooking {
         this.#bookingStatus = status;
     }
 
-    // Method to calculate total cost
     calculateTotal() {
         let pricePerMeal = 0;
 
@@ -100,7 +94,6 @@ class MealBooking {
         return pricePerMeal * this.#quantity;
     }
 
-    // Method to return booking summary
     getSummary() {
         return `
 Meal Booking Summary
@@ -117,5 +110,4 @@ Total Cost: $${this.calculateTotal()}
     }
 }
 
-// Export class
 export default MealBooking;
