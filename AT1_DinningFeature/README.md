@@ -2,7 +2,8 @@
 
 **Student Name:** Obert MOSES  
 **Student ID:** 221338  
-**Date:** 13 August 2026
+**Date:** 13 August 2026\
+**GitHub URL:** https://github.com/26alfer-25/IS305-DWU221338.git
 
 ## 1. Project Description
 
