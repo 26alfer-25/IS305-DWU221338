@@ -1,13 +1,15 @@
 /**
  * IS305 Lab 2 - Dining Booking Credit Extension
- * Lab 1 MealBooking Foundation retained for Part 1.
+ * Part 2: Student and MealBooking Integration
  * Student Name: Obert MOSES
  * Student ID: 221338
+ * Date: 14 August 2026
  */
 
+const Student = require("./Student");
+
 class MealBooking {
-    #studentId;
-    #studentName;
+    #student;
     #mealDate;
     #mealType;
     #quantity;
@@ -20,9 +22,12 @@ class MealBooking {
         Dinner: 20
     };
 
-    constructor(studentId, studentName, mealDate, mealType, quantity, dietaryNote = "") {
-        this.#studentId = studentId;
-        this.#studentName = studentName;
+    constructor(student, mealDate, mealType, quantity, dietaryNote = "") {
+        if (!(student instanceof Student)) {
+            throw new Error("MealBooking requires a valid Student object.");
+        }
+
+        this.#student = student;
         this.#mealDate = mealDate;
         this.#mealType = mealType;
         this.#quantity = Number(quantity);
@@ -30,25 +35,17 @@ class MealBooking {
         this.#bookingStatus = "Pending";
     }
 
-    get studentId() { return this.#studentId; }
-    set studentId(value) { this.#studentId = value; }
-
-    get studentName() { return this.#studentName; }
-    set studentName(value) { this.#studentName = value; }
-
+    get student() { return this.#student; }
     get mealDate() { return this.#mealDate; }
-    set mealDate(value) { this.#mealDate = value; }
-
     get mealType() { return this.#mealType; }
-    set mealType(value) { this.#mealType = value; }
-
     get quantity() { return this.#quantity; }
-    set quantity(value) { this.#quantity = Number(value); }
-
     get dietaryNote() { return this.#dietaryNote; }
-    set dietaryNote(value) { this.#dietaryNote = value; }
-
     get bookingStatus() { return this.#bookingStatus; }
+
+    set mealDate(value) { this.#mealDate = value; }
+    set mealType(value) { this.#mealType = value; }
+    set quantity(value) { this.#quantity = Number(value); }
+    set dietaryNote(value) { this.#dietaryNote = value; }
 
     calculateTotal() {
         const price = MealBooking.MEAL_PRICES[this.#mealType];
@@ -58,18 +55,26 @@ class MealBooking {
     validate() {
         const errors = [];
 
-        if (!this.#studentId || !String(this.#studentId).trim()) {
-            errors.push("Student ID is required.");
+        if (!(this.#student instanceof Student)) {
+            errors.push("A valid Student object is required.");
+        } else {
+            try {
+                this.#student.studentId;
+                this.#student.firstName;
+                this.#student.lastName;
+            } catch {
+                errors.push("Student information is invalid.");
+            }
         }
-        if (!this.#studentName || !String(this.#studentName).trim()) {
-            errors.push("Student name is required.");
-        }
+
         if (!this.#mealDate || !/^\d{4}-\d{2}-\d{2}$/.test(this.#mealDate)) {
             errors.push("Meal date must use YYYY-MM-DD format.");
         }
+
         if (!Object.hasOwn(MealBooking.MEAL_PRICES, this.#mealType)) {
             errors.push("Meal type must be Breakfast, Lunch, or Dinner.");
         }
+
         if (!Number.isInteger(this.#quantity) || this.#quantity < 1) {
             errors.push("Quantity must be a whole number of at least 1.");
         }
@@ -79,7 +84,9 @@ class MealBooking {
 
     confirmBooking() {
         const errors = this.validate();
-        if (errors.length) throw new Error(errors.join(" "));
+        if (errors.length) {
+            throw new Error(errors.join(" "));
+        }
         this.#bookingStatus = "Confirmed";
     }
 
@@ -88,7 +95,7 @@ class MealBooking {
     }
 
     getSummary() {
-        return `${this.#studentName} (${this.#studentId}) | ` +
+        return `${this.#student.getFullName()} (${this.#student.studentId}) | ` +
             `${this.#mealDate} | ${this.#mealType} x ${this.#quantity} | ` +
             `K${this.calculateTotal().toFixed(2)} | ${this.#bookingStatus}`;
     }
