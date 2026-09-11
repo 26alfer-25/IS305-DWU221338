@@ -2,6 +2,7 @@
   Program: Dining Meal Booking Feature — Lab 3 Distinction Extension
   Student Name: Obert MOSES
   Student ID: 221338
+  Date: 11 August 2026
   Description: A JavaScript class representing a standard DWU dining
   account. Students deposit funds into the account and pay for meals
   only when sufficient funds are available. This is the base class for
